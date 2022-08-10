@@ -1,19 +1,11 @@
-import {
-  Box,
-  Divider,
-  Drawer,
-  Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import { TurnedInNot } from "@mui/icons-material";
+import { useSelector } from "react-redux";
+import { Box, Divider, Drawer, List, Toolbar, Typography } from "@mui/material";
+import { SidebarItem } from "./";
 
 export const Sidebar = ({ drawerWidth = 240 }) => {
+  const { displayName } = useSelector((state) => state.auth);
+  const { notes } = useSelector((state) => state.journal);
+
   return (
     <Box
       component="nav"
@@ -31,38 +23,19 @@ export const Sidebar = ({ drawerWidth = 240 }) => {
         }}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Felix Miranda
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ textTransform: "capitalize" }}
+          >
+            {displayName}
           </Typography>
         </Toolbar>
         <Divider />
         <List>
-          {[
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "September",
-          ].map((text) => (
-            <ListItem key={text} dissablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <TurnedInNot />
-                </ListItemIcon>
-                <Grid container>
-                  <ListItemText primary={text} />
-                  <ListItemText
-                    secondary={
-                      "Proident voluptate et do in fugiat commodo in duis sint occaecat pariatur irure tempor."
-                    }
-                  />
-                </Grid>
-              </ListItemButton>
-            </ListItem>
+          {notes.map((note) => (
+            <SidebarItem {...note} key={note.id} />
           ))}
         </List>
       </Drawer>
